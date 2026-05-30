@@ -1,0 +1,207 @@
+// https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
+/* $fg-color: #{"@theme_fg_color"}; */
+/* $bg-color: #{"@theme_bg_color"}; */
+
+$fg-1: #fbf1c7;
+$fg-2: #ebdbb2;
+$fg-3: #a89984;
+
+$bg-1: #282828;
+$bg-2: #3c3836;
+$bg-3: #504945;
+$bg-4: #665c54;
+
+* {
+  all: unset;
+
+  font-family: "JetBrainsMono Nerd Font";
+}
+
+window.Bar {
+  color: $fg-1;
+  font-size: 14px;
+
+  background: transparent;
+
+  > centerbox {
+    background: rgba($bg-1, 0.84);
+    /* border: 1px solid $bg-2; */
+    border-radius: 40px;
+    padding: 4px;
+
+    > WorkspaceSwitcher {
+      font-size: 11px;
+
+      background-color: rgba($bg-3, 0.55);
+      /* border: 1px solid $bg-4; */
+      border-radius: 1000px;
+      padding: 0 16px 0 12px;
+
+      button.empty {
+        color: $fg-3;
+      }
+
+      button.occupied {
+        color: $fg-3;
+      }
+    }
+
+    .FocusedWindowDetails {
+      font-weight: bold;
+
+      background-color: rgba($bg-3, 0.55);
+      /* border: 1px solid $bg-4; */
+      border-radius: 1000px;
+      padding: 0 14px;
+    }
+
+    .SystemStats {
+      font-weight: bold;
+
+      .left-box {
+        background-color: rgba($bg-3, 0.55);
+        /* border: 1px solid $bg-4; */
+        border-radius: 40px;
+        border-top-left-radius: 40px;
+        border-bottom-left-radius: 40px;
+        border-top-right-radius: 18px;
+        border-bottom-right-radius: 18px;
+        padding: 0 12px 0 14px;
+      }
+
+      .right-box {
+        background-color: rgba($bg-3, 0.55);
+        /* border: 1px solid $bg-4; */
+        border-top-right-radius: 40px;
+        border-bottom-right-radius: 40px;
+        border-top-left-radius: 18px;
+        border-bottom-left-radius: 18px;
+        padding: 0 14px 0 12px;
+      }
+
+      .icon {
+        color: $fg-2;
+      }
+    }
+  }
+}
+
+window.Menu {
+  color: $fg-1;
+  font-size: 14px;
+
+  background: transparent;
+
+  > .wrapper {
+    background-color: rgba($bg-1, 0.84);
+    border-radius: 20px;
+    padding: 12px;
+
+    .ControlBlock {
+      .EndpointGroup {
+        margin-left: 3px;
+
+        > switch {
+          margin-right: 3px;
+        }
+      }
+
+      .SliderGroup {
+        > label {
+          min-width: 30px;
+        }
+
+        button {
+          color: $fg-3;
+
+          margin-left: 4px;
+          margin-right: 6px;
+        }
+      }
+    }
+
+    .DefaultDevice {
+      font-weight: bold;
+      padding: 8px 5px 2px 10px;
+    }
+
+    .group {
+      > label {
+        color: $fg-3;
+        font-weight: bold;
+        padding-left: 8px;
+      }
+
+      > box {
+        font-weight: bold;
+
+        background-color: rgba($bg-3, 0.55);
+        border-radius: 12px;
+        padding: 12px 12px 16px 16px;
+      }
+    }
+  }
+}
+
+tooltip {
+  background-color: rgba($bg-1, 0.95);
+  border: 1px solid $bg-4;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  label {
+    color: $fg-1;
+    font-size: 13px;
+
+    padding: 4px 8px;
+  }
+}
+
+scale {
+  min-height: 8px;
+
+  trough {
+    min-height: 4px;
+    background-color: $bg-3;
+    border-radius: 4px;
+
+    highlight {
+      background-color: $fg-3;
+      border-radius: 4px;
+    }
+  }
+
+  slider {
+    background-color: $fg-2;
+    /* box-shadow: none; */
+    min-width: 4px;
+    min-height: 4px;
+    border-radius: 10px;
+  }
+}
+
+switch {
+  background-color: $bg-3;
+  border-radius: 20px;
+  min-width: 18px;
+  min-height: 10px;
+  padding: 2px;
+
+  slider {
+    background-color: $fg-3;
+    border-radius: 50%;
+    min-width: 6px;
+    min-height: 6px;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  &:checked {
+    background-color: $fg-3;
+
+    slider {
+      background-color: $bg-2;
+    }
+  }
+}
