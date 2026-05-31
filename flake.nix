@@ -22,7 +22,6 @@
 
     astalPackages = with ags.packages.${system}; [
       astal4 # or astal3 for gtk3
-      battery
       bluetooth
       # brightness # use this instead of brightnessctl when it becomes available
       io

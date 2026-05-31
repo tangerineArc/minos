@@ -1,34 +1,33 @@
-import { createBinding } from "ags"
-import Battery from "gi://AstalBattery"
+import { With } from "ags"
+import { batteryState } from "../services/battery"
 import { uiState } from "../services/state"
 
 export default function SystemBattery() {
-  const bat = Battery.get_default()
-  if (!bat) {
-    return (
-      <button
-        onClicked={() => {
-          uiState.show_power_profiles = !uiState.show_power_profiles
-        }}
-      >
-        <image iconName="computer-symbolic" class="icon" pixelSize={14} />
-      </button>
-    )
-  }
-
-  const percentage = createBinding(bat, "percentage")
-  const iconName = createBinding(bat, "iconName")
-
   return (
     <button
       onClicked={() => {
         uiState.show_power_profiles = !uiState.show_power_profiles
       }}
     >
-      <box spacing={6}>
-        <image iconName={iconName} class="icon" pixelSize={14} />
-        <label label={percentage((p) => `${Math.floor(p * 100)}`)} />
-      </box>
+      <With value={batteryState}>
+        {(bat) => {
+          const level = Math.floor(bat.percentage * 100)
+          const limit = Math.floor(level / 10) * 10
+
+          let icon = bat.isCharging
+            ? level === 100
+              ? "battery-level-100-charged-symbolic"
+              : `battery-level-${limit}-charging-symbolic`
+            : `battery-level-${limit}-symbolic`
+
+          return (
+            <box spacing={6}>
+              <image iconName={icon} class="icon" pixelSize={14} />
+              <label label={`${level}`} />
+            </box>
+          )
+        }}
+      </With>
     </button>
   )
 }
