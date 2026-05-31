@@ -56,6 +56,9 @@
 
           mkdir -p $out/bin
           mkdir -p $out/share
+
+          rm -rf showcase/
+
           cp -r * $out/share
           ags bundle ${entry} $out/bin/${pname} -d "SRC='$out/share'"
 
