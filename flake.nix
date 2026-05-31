@@ -21,7 +21,7 @@
     entry = "app.ts";
 
     astalPackages = with ags.packages.${system}; [
-      astal4 # or astal3 for gtk3
+      astal4
       bluetooth
       # brightness # use this instead of brightnessctl when it becomes available
       io
@@ -72,6 +72,10 @@
           })
         ];
       };
+    };
+
+    homeManagerModules.default = import ./module.nix {
+      inherit self;
     };
   };
 }
