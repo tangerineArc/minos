@@ -1,5 +1,6 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4"
 import app from "ags/gtk4/app"
+import { BAR_HEIGHT, BAR_MARGIN_TOP, BAR_WIDTH } from "../config"
 import { currentWindow } from "../services/niri-window"
 import SystemBattery from "./SystemBattery"
 import SystemBluetooth from "./SystemBluetooth"
@@ -9,7 +10,7 @@ import SystemWifi from "./SystemWifi"
 import WorkspaceSwitcher from "./WorkspaceSwitcher"
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
-  const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
+  const { TOP } = Astal.WindowAnchor
 
   return (
     <window
@@ -20,9 +21,9 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP}
-      defaultHeight={40}
-      defaultWidth={1000}
-      marginTop={4}
+      defaultHeight={BAR_HEIGHT}
+      defaultWidth={BAR_WIDTH}
+      marginTop={BAR_MARGIN_TOP}
       marginBottom={0}
       application={app}
     >

@@ -1,6 +1,7 @@
 import { createBinding } from "ags"
 import { Astal, Gdk } from "ags/gtk4"
 import PowerProfiles from "gi://AstalPowerProfiles"
+import { BAR_WIDTH, MENU_MARGIN_TOP } from "../../config"
 import { uiState } from "../../services/state"
 
 const { TOP, RIGHT } = Astal.WindowAnchor
@@ -33,7 +34,7 @@ export default function PowerProfilesMenu(gdkMonitor: Gdk.Monitor) {
 
   const isVisible = createBinding(uiState, "show_power_profiles")
   const screenWidth = gdkMonitor.get_geometry().width
-  const exactRightMargin = (screenWidth - 1000) / 2 + 4
+  const exactRightMargin = (screenWidth - BAR_WIDTH) / 2 + 4
 
   return (
     <window
@@ -47,7 +48,7 @@ export default function PowerProfilesMenu(gdkMonitor: Gdk.Monitor) {
       anchor={TOP | RIGHT}
       defaultWidth={-1}
       defaultHeight={-1}
-      marginTop={48}
+      marginTop={MENU_MARGIN_TOP}
       marginRight={exactRightMargin}
       onNotifyIsActive={(self) => {
         if (!self.is_active) {

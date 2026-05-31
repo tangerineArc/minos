@@ -1,8 +1,7 @@
 import { createState } from "ags"
 import { execAsync } from "ags/process"
 import { interval } from "ags/time"
-
-const BAT_ID = "BAT1"
+import { BAT_ID } from "../config"
 
 const basePath = `/sys/class/power_supply/${BAT_ID}`
 const capacityPath = `${basePath}/capacity`

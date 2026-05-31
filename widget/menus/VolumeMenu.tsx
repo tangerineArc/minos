@@ -1,6 +1,7 @@
 import { createBinding, createComputed, For, With } from "ags"
 import { Astal, Gdk, Gtk } from "ags/gtk4"
 import Wp from "gi://AstalWp"
+import { BAR_WIDTH, DEFAULT_MENU_WIDTH, MENU_MARGIN_TOP } from "../../config"
 import { uiState } from "../../services/state"
 
 const { TOP, RIGHT } = Astal.WindowAnchor
@@ -25,7 +26,7 @@ export default function VolumeMenu(gdkmonitor: Gdk.Monitor) {
 
   const isVisible = createBinding(uiState, "show_volume")
   const screenWidth = gdkmonitor.get_geometry().width
-  const exactRightMargin = (screenWidth - 1000) / 2 + 4
+  const exactRightMargin = (screenWidth - BAR_WIDTH) / 2 + 4
 
   return (
     <window
@@ -37,9 +38,9 @@ export default function VolumeMenu(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.IGNORE}
       keymode={Astal.Keymode.ON_DEMAND}
       anchor={TOP | RIGHT}
-      defaultWidth={320}
-      defaultHeight={-1} // Fixes the window height to the content size
-      marginTop={48}
+      defaultWidth={DEFAULT_MENU_WIDTH}
+      defaultHeight={-1}
+      marginTop={MENU_MARGIN_TOP}
       marginRight={exactRightMargin}
       onNotifyIsActive={(self) => {
         if (!self.is_active) uiState.show_volume = false

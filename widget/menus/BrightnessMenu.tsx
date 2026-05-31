@@ -1,5 +1,6 @@
 import { createBinding, createComputed } from "ags"
 import { Astal, Gdk, Gtk } from "ags/gtk4"
+import { BAR_WIDTH, DEFAULT_MENU_WIDTH, MENU_MARGIN_TOP } from "../../config"
 import { brightness, updateBrightness } from "../../services/brightness"
 import {
   nightlight,
@@ -20,7 +21,7 @@ export default function BrightnessMenu(gdkmonitor: Gdk.Monitor) {
 
   const isVisible = createBinding(uiState, "show_brightness")
   const screenWidth = gdkmonitor.get_geometry().width
-  const exactRightMargin = (screenWidth - 1000) / 2 + 4
+  const exactRightMargin = (screenWidth - BAR_WIDTH) / 2 + 4
 
   return (
     <window
@@ -32,9 +33,9 @@ export default function BrightnessMenu(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.IGNORE}
       keymode={Astal.Keymode.ON_DEMAND}
       anchor={TOP | RIGHT}
-      defaultWidth={320}
+      defaultWidth={DEFAULT_MENU_WIDTH}
       defaultHeight={-1}
-      marginTop={48}
+      marginTop={MENU_MARGIN_TOP}
       marginRight={exactRightMargin}
       onNotifyIsActive={(self) => {
         if (!self.is_active) uiState.show_brightness = false
