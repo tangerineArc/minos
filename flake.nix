@@ -1,5 +1,5 @@
 {
-  description = "My Awesome Desktop Shell";
+  description = "Minos";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
@@ -17,7 +17,7 @@
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
-    pname = "my-shell";
+    pname = "minos";
     entry = "app.ts";
 
     astalPackages = with ags.packages.${system}; [
@@ -27,6 +27,7 @@
       # brightness # use this instead of brightnessctl when it becomes available
       io
       network
+      powerprofiles
       wireplumber
       # notifd tray
     ];

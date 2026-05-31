@@ -92,6 +92,21 @@ window.Menu {
 
   background: transparent;
 
+  > .button-group {
+    > button {
+      background-color: rgba($bg-3, 0.55);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    > button.active {
+      color: $bg-2;
+      font-weight: bold;
+
+      background-color: rgba($fg-1, 0.67);
+    }
+  }
+
   > .wrapper {
     background-color: rgba($bg-1, 0.84);
     border-radius: 20px;
