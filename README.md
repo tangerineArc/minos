@@ -11,8 +11,6 @@ Minos is a **personal** shell/bar built with [AGS](https://github.com/Aylur/ags)
 
 ![bar](./showcase/bar.png)
 
-![window-title](./showcase/window-title.png)
-
 ### Quick settings
 
 ![brightness-controls](./showcase/brightness-controls.png)
