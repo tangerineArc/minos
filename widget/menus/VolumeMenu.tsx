@@ -132,6 +132,9 @@ function AudioControl({
             onClicked={() => {
               ;(endpoint as Wp.Endpoint).isDefault = true
             }}
+            class={createBinding(endpoint as Wp.Endpoint, "isDefault").as(
+              (active) => (active ? "active" : ""),
+            )}
           >
             <label
               label={createBinding(endpoint as Wp.Endpoint, "isDefault").as(
