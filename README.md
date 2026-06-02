@@ -1,11 +1,9 @@
 # Minos
 
-A minimal AGS-based desktop shell for [Niri](https://github.com/YaLTeR/niri) on Wayland.
-
 Minos is a **personal** shell/bar built with [AGS](https://github.com/Aylur/ags), GTK4, and Astal. It provides a compact top bar, workspace controls, system indicators, and small quick-settings menus intended for a Niri-based NixOS desktop.
 
 > [!NOTE]
-> This is a personal shell and is currently tailored to my setup. You may need to adjust constants in `config.ts`, runtime services, battery ID, styling, or widget behavior for your machine.
+> This is a personal shell and is currently tailored to my setup. You may need to adjust runtime services, battery ID, styling, or widget behavior for your machine.
 
 ## Showcase
 
@@ -19,11 +17,11 @@ Minos is a **personal** shell/bar built with [AGS](https://github.com/Aylur/ags)
 
 ![brightness-controls](./showcase/brightness-controls.png)
 
-![power-profiles](./showcase/power-profiles.png)
+![volume-controls](./showcase/volume-controls.png)
 
 ### Desktop overview
 
-![volume-controls](./showcase/volume-controls.png)
+![full-preview](./showcase/full-preview.png)
 
 ## Features
 
@@ -39,6 +37,7 @@ Minos is a **personal** shell/bar built with [AGS](https://github.com/Aylur/ags)
   - brightness and night light
   - power profiles
   - volume and audio devices
+- Matugen Integration
 - Nix flake package
 - Home Manager module with a systemd user service
 
@@ -177,10 +176,35 @@ nix build
 
 ## Configuration
 
-A few values are currently hard-coded for my setup and can be adjusted in `config.ts`, including:
+Minos is partly configurable via a standard JSON file and supports real-time hot-reloading for colors and a few layout parameters.
 
-- bar width and height
-- menu dimensions and margins
-- battery device ID
+By default, the shell looks for your configuration file at:
+`~/.config/minos/config.json`
 
-For example, if your battery is exposed as `BAT0` instead of `BAT1`, update `BAT_ID` in `config.ts`.
+If the file doesn't exist or a key is missing, Minos automatically falls back to its internal defaults. You only need to define the specific properties you actually want to override.
+
+### Example `config.json`
+If your system exposes your battery as `BAT0` instead of `BAT1`, and you want to inject a custom color palette, your config would look like this:
+```json
+{
+  "general": {
+    "bar_width": 1000,
+    "bar_height": 40,
+    "bar_margin_top": 4,
+    "default_menu_width": 320,
+    "bat_id": "BAT0"
+  },
+  "colors": {
+    "accent-primary": "#c7bfff",
+    "bg-1": "#141318",
+    "fg-1": "#e5e1e9"
+  }
+}
+```
+*(Check `config.ts` for the full list of available color tokens and variables).*
+
+### Dynamic Hot-Reloading
+Minos actively monitors `config.json` in the background. Whenever you update your values, the shell will instantly hot-reload the CSS without requiring a session restart.
+
+> [!NOTE]
+> **For Vim/Neovim users:** By default, Neovim uses atomic saves (deleting and replacing the file), which will kill the background file watcher. To keep hot-reloading active, ensure `vim.opt.backupcopy = "yes"` is set in your editor config.
