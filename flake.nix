@@ -4,8 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
-    ags = {
-      url = "github:aylur/ags";
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -13,68 +13,42 @@
   outputs = {
     self,
     nixpkgs,
-    ags,
+    quickshell,
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
-    pname = "minos";
-    entry = "app.ts";
-
-    astalPackages = with ags.packages.${system}; [
-      astal4
-      bluetooth
-      # brightness # use this instead of brightnessctl when it becomes available
-      io
-      network
-      powerprofiles
-      wireplumber
-      # notifd tray
-    ];
-
-    extraPackages =
-      astalPackages
-      ++ [
-        pkgs.libadwaita
-        pkgs.libsoup_3
-      ];
+    pname = "minos-quickshell";
   in {
-    packages.${system} = {
-      default = pkgs.stdenv.mkDerivation {
-        name = pname;
-        src = ./.;
+    devShells.${system}.default = pkgs.mkShell {
+      buildInputs = with pkgs; [
+        quickshell.packages.${system}.default
+        qt6.qtbase
+        qt6.qtdeclarative
+        qt6.qtwayland
+      ];
 
-        nativeBuildInputs = with pkgs; [
-          wrapGAppsHook3
-          gobject-introspection
-          ags.packages.${system}.default
-        ];
-
-        buildInputs = extraPackages ++ [pkgs.gjs];
-
-        installPhase = ''
-          runHook preInstall
-
-          mkdir -p $out/bin
-          mkdir -p $out/share
-
-          rm -rf showcase/
-
-          cp -r * $out/share
-          ags bundle ${entry} $out/bin/${pname} -d "SRC='$out/share'"
-
-          runHook postInstall
-        '';
-      };
+      shellHook = ''
+        export QT_QPA_PLATFORM=wayland
+        echo "Minos Quickshell Dev Shell loaded"
+      '';
     };
 
-    devShells.${system} = {
-      default = pkgs.mkShell {
-        buildInputs = [
-          (ags.packages.${system}.default.override {
-            inherit extraPackages;
-          })
-        ];
-      };
+    packages.${system}.default = pkgs.stdenv.mkDerivation {
+      name = pname;
+      src = ./.;
+
+      installPhase = ''
+        mkdir -p $out/share/minos
+        cp -r *.qml components/ $out/share/minos
+
+        mkdir -p $out/bin
+        cat <<EOF > $out/bin/minos
+        #! /bin/sh
+        exec ${quickshell.packages.${system}.default}/bin/quickshell -p $out/share/minos/shell.qml
+        EOF
+
+        chmod +x $out/bin/minos
+      '';
     };
 
     homeManagerModules.default = import ./module.nix {
