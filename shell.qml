@@ -1,24 +1,24 @@
 import QtQuick
+import QtQuick.Window
 import Quickshell
 import Quickshell.Wayland
 
 import "./components"
 
 ShellRoot {
+    // Main shell bar
     PanelWindow {
-        implicitHeight: 40
-        implicitWidth: 1200
         color: "transparent"
         exclusiveZone: height
+        implicitHeight: 40
+        implicitWidth: 1200
 
         anchors.top: true
+        margins.top: 4
+        WlrLayershell.layer: WlrLayer.Top
         WlrLayershell.namespace: "minos"
 
-        margins {
-            bottom: 0
-            top: 4
-        }
-
+        // Background
         Rectangle {
             color: Utils.withAlpha(Theme.palette.primary5, 0.54)
             radius: height / 2
@@ -26,6 +26,7 @@ ShellRoot {
             anchors.fill: parent
         }
 
+        // Workspace switcher
         Rectangle {
             color: "transparent"
             height: parent.height - 8
@@ -46,6 +47,7 @@ ShellRoot {
             }
         }
 
+        // Focused window title
         Rectangle {
             color: Utils.withAlpha(Theme.palette.primary15, 0.67)
             height: parent.height - 8
@@ -67,6 +69,7 @@ ShellRoot {
             }
         }
 
+        // Control center trigger
         Rectangle {
             color: Utils.withAlpha(Theme.palette.primary15, 0.67)
             height: parent.height - 8
@@ -87,7 +90,66 @@ ShellRoot {
                 id: rightContent
                 anchors.centerIn: parent
 
-                ControlCenterTrigger {}
+                ControlCenterTrigger {
+                    onClicked: ccPopup.visible = !ccPopup.visible
+                }
+            }
+        }
+    }
+
+    // Control center popup
+    PanelWindow {
+        id: ccPopup
+        color: "transparent"
+        exclusiveZone: 0
+        implicitWidth: 320
+        implicitHeight: 320
+        visible: false
+
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.namespace: "minos-control-center"
+
+        anchors {
+            right: true
+            top: true
+        }
+
+        margins {
+            top: 4
+            right: ((Screen.width - 1200) / 2) + 4
+        }
+
+        Connections {
+            target: Qt.application
+
+            function onStateChanged() {
+                if (Qt.application.state !== Qt.ApplicationActive && ccPopup.visible) {
+                    ccPopup.visible = false;
+                }
+            }
+        }
+
+        Shortcut {
+            sequence: "Esc"
+            onActivated: ccPopup.visible = false
+        }
+
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary5, 0.54)
+            radius: 20
+
+            anchors.fill: parent
+
+            Text {
+                color: Theme.palette.neutral80
+                text: "Fluid as hell."
+                anchors.centerIn: parent
+
+                font {
+                    family: Theme.fontFamily
+                    pixelSize: Theme.fontSize
+                }
             }
         }
     }

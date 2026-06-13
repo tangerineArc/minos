@@ -7,6 +7,8 @@ Item {
     implicitWidth: triggerRow.implicitWidth
     implicitHeight: 32
 
+    signal clicked
+
     Row {
         id: triggerRow
         spacing: 10
@@ -14,14 +16,14 @@ Item {
         anchors.centerIn: parent
 
         SymbolicIcon {
-            iconColor: Theme.palette.primary60
+            iconColor: Theme.palette.secondary70
             name: "network-wireless-symbolic"
 
             anchors.verticalCenter: parent.verticalCenter
         }
 
         SymbolicIcon {
-            iconColor: Theme.palette.primary60
+            iconColor: Theme.palette.secondary70
             name: "bluetooth-active-symbolic"
 
             anchors.verticalCenter: parent.verticalCenter
@@ -31,14 +33,14 @@ Item {
             spacing: 4
 
             SymbolicIcon {
-                iconColor: Theme.palette.primary60
+                iconColor: Theme.palette.secondary70
                 name: "battery-level-60-symbolic"
 
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             Text {
-                color: Theme.palette.neutral80
+                color: Theme.palette.secondary80
                 text: "85"
 
                 anchors.verticalCenter: parent.verticalCenter
@@ -57,7 +59,7 @@ Item {
         anchors.fill: parent
 
         onClicked: {
-            console.log("TODO: Drop the control center popup here");
+            root.clicked();
         }
     }
 }
