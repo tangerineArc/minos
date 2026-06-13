@@ -7,7 +7,7 @@ import "./components"
 ShellRoot {
     PanelWindow {
         implicitHeight: 40
-        implicitWidth: 1000
+        implicitWidth: 1200
         color: "transparent"
         exclusiveZone: height
 
@@ -47,22 +47,23 @@ ShellRoot {
         }
 
         Rectangle {
-            color: Utils.withAlpha(Theme.palette.primary5, 0.84)
-            height: 40
+            color: Utils.withAlpha(Theme.palette.primary15, 0.67)
+            height: parent.height - 8
             radius: height / 2
-            width: centerContent.width + 24
+            width: centerContent.width + 32
 
             anchors.centerIn: parent
+
+            border {
+                color: Utils.withAlpha(Theme.palette.primary40, 0.33)
+                width: 1
+            }
 
             Row {
                 id: centerContent
                 anchors.centerIn: parent
 
-                Text {
-                    color: Theme.palette.neutral50
-                    font: Theme.fontFamily
-                    text: "#[ NixOS ]"
-                }
+                WindowTitle {}
             }
         }
 

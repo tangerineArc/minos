@@ -46,14 +46,14 @@ Item {
                 property bool isLast: index === workspaceRepeater.count - 1
                 bottomLeftRadius: isFirst ? height / 2 : 6
                 bottomRightRadius: isLast ? height / 2 : 6
-                color: isActive ? Utils.withAlpha(Theme.palette.primary30, 0.44) : Utils.withAlpha(Theme.palette.primary15, 0.44)
+                color: isActive ? Utils.withAlpha(Theme.palette.primary30, 0.67) : Utils.withAlpha(Theme.palette.primary15, 0.67)
                 height: 32
                 radius: height / 2
                 topLeftRadius: isFirst ? height / 2 : 6
                 topRightRadius: isLast ? height / 2 : 6
                 width: iconRow.width + 24
                 border {
-                    color: isActive ? Utils.withAlpha(Theme.palette.primary50, 0.22) : Utils.withAlpha(Theme.palette.primary40, 0.22)
+                    color: isActive ? Utils.withAlpha(Theme.palette.primary50, 0.33) : Utils.withAlpha(Theme.palette.primary40, 0.33)
                     width: 1
                 }
 

@@ -39,7 +39,7 @@
 
       installPhase = ''
         mkdir -p $out/share/minos
-        cp -r *.qml components/ $out/share/minos
+        cp -r *.qml components/ scripts/ $out/share/minos
 
         mkdir -p $out/bin
         cat <<EOF > $out/bin/minos
@@ -48,6 +48,7 @@
         EOF
 
         chmod +x $out/bin/minos
+        chmod -R +x $out/share/minos/scripts/
       '';
     };
 
