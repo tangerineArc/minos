@@ -20,15 +20,24 @@
     pname = "minos-quickshell";
   in {
     devShells.${system}.default = pkgs.mkShell {
+      nativeBuildInputs = with pkgs; [
+        qt6.wrapQtAppsHook
+      ];
+
       buildInputs = with pkgs; [
         quickshell.packages.${system}.default
         qt6.qtbase
         qt6.qtdeclarative
+        qt6.qtsvg
         qt6.qtwayland
+        qt6.qt5compat
       ];
 
       shellHook = ''
         export QT_QPA_PLATFORM=wayland
+        export QS_ICON_THEME="Adwaita"
+        export QML2_IMPORT_PATH="${pkgs.qt6.qt5compat}/lib/qt-6/qml:''${QML2_IMPORT_PATH:-}"
+
         echo "Minos Quickshell Dev Shell loaded"
       '';
     };
@@ -44,6 +53,8 @@
         mkdir -p $out/bin
         cat <<EOF > $out/bin/minos
         #! /bin/sh
+        export QS_ICON_THEME="Adwaita"
+        export QML2_IMPORT_PATH="${pkgs.qt6.qt5compat}/lib/qt-6/qml:\$QML2_IMPORT_PATH"
         exec ${quickshell.packages.${system}.default}/bin/quickshell -p $out/share/minos/shell.qml
         EOF
 

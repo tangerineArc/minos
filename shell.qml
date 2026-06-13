@@ -20,7 +20,7 @@ ShellRoot {
         }
 
         Rectangle {
-            color: Utils.withAlpha(Theme.palette.primary5, 0.44)
+            color: Utils.withAlpha(Theme.palette.primary5, 0.54)
             radius: height / 2
 
             anchors.fill: parent
@@ -68,29 +68,26 @@ ShellRoot {
         }
 
         Rectangle {
-            color: Utils.withAlpha(Theme.palette.primary5, 0.84)
-            height: 40
+            color: Utils.withAlpha(Theme.palette.primary15, 0.67)
+            height: parent.height - 8
             radius: height / 2
-            width: rightContent.width + 24
+            width: rightContent.width + 32
 
             anchors {
                 right: parent.right
+                margins: 4
                 verticalCenter: parent.verticalCenter
+            }
+            border {
+                color: Utils.withAlpha(Theme.palette.primary40, 0.33)
+                width: 1
             }
 
             Row {
                 id: rightContent
                 anchors.centerIn: parent
 
-                Text {
-                    color: Theme.palette.neutral50
-                    text: "gay"
-
-                    font {
-                        family: Theme.fontFamily
-                        pixelSize: Theme.fontSize
-                    }
-                }
+                ControlCenterTrigger {}
             }
         }
     }
