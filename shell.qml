@@ -2,6 +2,8 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 
+import "./components"
+
 ShellRoot {
     PanelWindow {
         implicitHeight: 40
@@ -13,42 +15,47 @@ ShellRoot {
         WlrLayershell.namespace: "minos"
 
         margins {
-            top: 4
             bottom: 0
-            left: 10
-            right: 10
+            top: 4
+        }
+
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary5, 0.44)
+            radius: height / 2
+
+            anchors.fill: parent
+        }
+
+        Rectangle {
+            color: "transparent"
+            height: parent.height - 8
+            radius: height / 2
+            width: leftContent.width
+
+            anchors {
+                left: parent.left
+                margins: 4
+                verticalCenter: parent.verticalCenter
+            }
+
+            Row {
+                id: leftContent
+                anchors.centerIn: parent
+
+                Workspaces {}
+            }
         }
 
         Rectangle {
             color: Utils.withAlpha(Theme.palette.primary5, 0.84)
-            radius: 20
+            height: 40
+            radius: height / 2
+            width: centerContent.width + 24
 
-            anchors.fill: parent
-
-            Row {
-                spacing: 8
-
-                anchors {
-                    left: parent.left
-                    leftMargin: 16
-                    verticalCenter: parent.verticalCenter
-                }
-
-                // Workspaces {}
-
-                Text {
-                    color: Theme.palette.primary80
-                    text: "Minos"
-
-                    font {
-                        family: Theme.fontFamily
-                        pixelSize: Theme.fontSize
-                    }
-                }
-            }
+            anchors.centerIn: parent
 
             Row {
-                spacing: 8
+                id: centerContent
                 anchors.centerIn: parent
 
                 Text {
@@ -57,20 +64,31 @@ ShellRoot {
                     text: "#[ NixOS ]"
                 }
             }
+        }
+
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary5, 0.84)
+            height: 40
+            radius: height / 2
+            width: rightContent.width + 24
+
+            anchors {
+                right: parent.right
+                verticalCenter: parent.verticalCenter
+            }
 
             Row {
-                spacing: 8
-
-                anchors {
-                    right: parent.right
-                    rightMargin: 16
-                    verticalCenter: parent.verticalCenter
-                }
+                id: rightContent
+                anchors.centerIn: parent
 
                 Text {
                     color: Theme.palette.neutral50
-                    font: Theme.fontFamily
                     text: "gay"
+
+                    font {
+                        family: Theme.fontFamily
+                        pixelSize: Theme.fontSize
+                    }
                 }
             }
         }
