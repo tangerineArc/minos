@@ -6,38 +6,57 @@ import Quickshell.Wayland
 import "./components"
 
 ShellRoot {
-    // Main shell bar
+    // Space reserver
     PanelWindow {
+        id: trickWindow
         color: "transparent"
         exclusiveZone: height
-        implicitHeight: 40
-        implicitWidth: 1200
+        implicitHeight: 42
 
-        anchors.top: true
-        margins.top: 4
+        margins.top: 6
         WlrLayershell.layer: WlrLayer.Top
-        WlrLayershell.namespace: "minos"
+        WlrLayershell.namespace: "minos-space-reserver"
+
+        anchors {
+            left: true
+            right: true
+            top: true
+        }
+    }
+
+    // Workspace switcher
+    PanelWindow {
+        color: "transparent"
+        implicitHeight: trickWindow.height
+        implicitWidth: leftContent.width + 10
+
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.namespace: "minos-workspace-switcher"
+
+        anchors {
+            left: true
+            top: true
+        }
+        margins {
+            left: 8
+            top: -trickWindow.height
+        }
 
         // Background
         Rectangle {
-            color: Utils.withAlpha(Theme.palette.primary5, 0.54)
-            radius: height / 2
+            color: Utils.withAlpha(Theme.palette.primary5, 0.44)
+            radius: 10
 
             anchors.fill: parent
         }
 
-        // Workspace switcher
+        // Switcher
         Rectangle {
             color: "transparent"
-            height: parent.height - 8
-            radius: height / 2
-            width: leftContent.width
+            height: parent.height - 10
+            width: leftContent.width + 10
 
-            anchors {
-                left: parent.left
-                margins: 4
-                verticalCenter: parent.verticalCenter
-            }
+            anchors.centerIn: parent
 
             Row {
                 id: leftContent
@@ -46,20 +65,35 @@ ShellRoot {
                 Workspaces {}
             }
         }
+    }
 
-        // Focused window title
+    // Focused window title
+    PanelWindow {
+        color: "transparent"
+        implicitHeight: trickWindow.height
+        implicitWidth: centerContent.width + 38
+
+        anchors.top: true
+        margins.top: -trickWindow.height
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.namespace: "minos-focused-window-title"
+
+        // Background
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary5, 0.44)
+            radius: 10
+
+            anchors.fill: parent
+        }
+
+        // Title
         Rectangle {
             color: Utils.withAlpha(Theme.palette.primary15, 0.67)
-            height: parent.height - 8
-            radius: height / 2
-            width: centerContent.width + 32
+            height: parent.height - 10
+            radius: 10
+            width: centerContent.width + 28
 
             anchors.centerIn: parent
-
-            border {
-                color: Utils.withAlpha(Theme.palette.primary40, 0.33)
-                width: 1
-            }
 
             Row {
                 id: centerContent
@@ -68,23 +102,42 @@ ShellRoot {
                 WindowTitle {}
             }
         }
+    }
 
-        // Control center trigger
+    // Controls Trigger
+    PanelWindow {
+        color: "transparent"
+        implicitHeight: trickWindow.height
+        implicitWidth: rightContent.width + 38
+
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.namespace: "minos-controls-trigger"
+
+        anchors {
+            right: true
+            top: true
+        }
+        margins {
+            right: 8
+            top: -trickWindow.height
+        }
+
+        // Background
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary5, 0.44)
+            radius: 10
+
+            anchors.fill: parent
+        }
+
+        // Trigger
         Rectangle {
             color: Utils.withAlpha(Theme.palette.primary15, 0.67)
-            height: parent.height - 8
-            radius: height / 2
-            width: rightContent.width + 32
+            height: parent.height - 10
+            radius: 10
+            width: rightContent.width + 28
 
-            anchors {
-                right: parent.right
-                margins: 4
-                verticalCenter: parent.verticalCenter
-            }
-            border {
-                color: Utils.withAlpha(Theme.palette.primary40, 0.33)
-                width: 1
-            }
+            anchors.centerIn: parent
 
             Row {
                 id: rightContent

@@ -42,20 +42,11 @@ Item {
             Rectangle {
                 id: workspacePill
                 property bool isActive: modelData.active
-                property bool isFirst: index === 0
-                property bool isLast: index === workspaceRepeater.count - 1
-                bottomLeftRadius: isFirst ? height / 2 : 6
-                bottomRightRadius: isLast ? height / 2 : 6
-                color: isActive ? Utils.withAlpha(Theme.palette.primary30, 0.67) : Utils.withAlpha(Theme.palette.primary15, 0.67)
-                height: 32
-                radius: height / 2
-                topLeftRadius: isFirst ? height / 2 : 6
-                topRightRadius: isLast ? height / 2 : 6
+
+                color: Utils.withAlpha(isActive ? Theme.palette.primary15 : Theme.palette.primary10, 0.67)
+                height: trickWindow.height - 10
+                radius: 10
                 width: iconRow.width + 24
-                border {
-                    color: isActive ? Utils.withAlpha(Theme.palette.primary50, 0.33) : Utils.withAlpha(Theme.palette.primary40, 0.33)
-                    width: 1
-                }
 
                 Row {
                     id: iconRow
@@ -90,8 +81,8 @@ Item {
                         model: modelData.apps
 
                         Text {
-                            color: workspacePill.isActive ? (modelData.isFocused ? Theme.palette.primary60 : Theme.palette.primary50) : Theme.palette.neutral70
-                            opacity: workspacePill.isActive ? 1.0 : 0.7
+                            color: modelData.isFocused ? Theme.palette.primary60 : Theme.palette.neutral70
+                            opacity: modelData.isFocused ? 1.0 : 0.7
                             text: Utils.getIcon(modelData.appId, modelData.title)
 
                             font {

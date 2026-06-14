@@ -5,7 +5,7 @@ import "../"
 Item {
     id: root
     implicitWidth: triggerRow.implicitWidth
-    implicitHeight: 32
+    implicitHeight: trickWindow.height - 10
 
     signal clicked
 

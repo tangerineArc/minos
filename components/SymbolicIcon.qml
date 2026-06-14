@@ -9,7 +9,7 @@ Item {
 
     property string name: ""
     property color iconColor: "white"
-    property int size: Theme.fontSize
+    property int size: Theme.fontSize - 1
 
     implicitWidth: size
     implicitHeight: size
