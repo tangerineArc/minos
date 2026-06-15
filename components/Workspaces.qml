@@ -33,7 +33,7 @@ Item {
 
     Row {
         id: mainRow
-        spacing: 4
+        spacing: 3
 
         Repeater {
             id: workspaceRepeater
@@ -81,7 +81,7 @@ Item {
                         model: modelData.apps
 
                         Text {
-                            color: modelData.isFocused ? Theme.palette.primary60 : Theme.palette.neutral70
+                            color: modelData.isFocused ? Theme.palette.primary70 : Theme.palette.neutral70
                             opacity: modelData.isFocused ? 1.0 : 0.7
                             text: Utils.getIcon(modelData.appId, modelData.title)
 

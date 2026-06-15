@@ -45,9 +45,14 @@ ShellRoot {
         // Background
         Rectangle {
             color: Utils.withAlpha(Theme.palette.primary5, 0.44)
-            radius: 10
+            radius: 14
 
             anchors.fill: parent
+
+            border {
+                color: Utils.withAlpha(Theme.palette.primary60, 0.15)
+                width: 1
+            }
         }
 
         // Switcher
@@ -81,9 +86,14 @@ ShellRoot {
         // Background
         Rectangle {
             color: Utils.withAlpha(Theme.palette.primary5, 0.44)
-            radius: 10
+            radius: 14
 
             anchors.fill: parent
+
+            border {
+                color: Utils.withAlpha(Theme.palette.primary60, 0.15)
+                width: 1
+            }
         }
 
         // Title
@@ -125,9 +135,14 @@ ShellRoot {
         // Background
         Rectangle {
             color: Utils.withAlpha(Theme.palette.primary5, 0.44)
-            radius: 10
+            radius: 14
 
             anchors.fill: parent
+
+            border {
+                color: Utils.withAlpha(Theme.palette.primary60, 0.15)
+                width: 1
+            }
         }
 
         // Trigger
@@ -186,35 +201,27 @@ ShellRoot {
             onActivated: ccPopup.visible = false
         }
 
-        // Background
         Rectangle {
             color: Utils.withAlpha(Theme.palette.primary5, 0.44)
-            radius: 10
+            radius: 14
 
             anchors.fill: parent
+
+            border {
+                color: Utils.withAlpha(Theme.palette.primary60, 0.15)
+                width: 1
+            }
         }
 
-        Rectangle {
-            // color: Utils.withAlpha(Theme.palette.primary5, 0.54)
-            radius: 10
+        Column {
+            anchors.fill: parent
+            anchors.margins: 14
+            anchors.topMargin: 15
+            spacing: 16
 
-            color: "transparent"
-            height: parent.height - 10
-            // radius: 10
-            width: parent.width - 10
+            VolumeControl {}
 
-            anchors.centerIn: parent
-
-            Text {
-                color: Theme.palette.neutral80
-                text: "Fluid as hell."
-                anchors.centerIn: parent
-
-                font {
-                    family: Theme.fontFamily
-                    pixelSize: Theme.fontSize
-                }
-            }
+            // Next controls go here...
         }
     }
 }
