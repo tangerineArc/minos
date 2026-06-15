@@ -154,7 +154,6 @@ ShellRoot {
     PanelWindow {
         id: ccPopup
         color: "transparent"
-        exclusiveZone: 0
         implicitWidth: 320
         implicitHeight: 320
         visible: false
@@ -167,10 +166,9 @@ ShellRoot {
             right: true
             top: true
         }
-
         margins {
             top: 4
-            right: ((Screen.width - 1200) / 2) + 4
+            right: 6
         }
 
         Connections {
@@ -188,11 +186,24 @@ ShellRoot {
             onActivated: ccPopup.visible = false
         }
 
+        // Background
         Rectangle {
-            color: Utils.withAlpha(Theme.palette.primary5, 0.54)
-            radius: 20
+            color: Utils.withAlpha(Theme.palette.primary5, 0.44)
+            radius: 10
 
             anchors.fill: parent
+        }
+
+        Rectangle {
+            // color: Utils.withAlpha(Theme.palette.primary5, 0.54)
+            radius: 10
+
+            color: "transparent"
+            height: parent.height - 10
+            // radius: 10
+            width: parent.width - 10
+
+            anchors.centerIn: parent
 
             Text {
                 color: Theme.palette.neutral80
