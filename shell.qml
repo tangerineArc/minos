@@ -217,9 +217,10 @@ ShellRoot {
             anchors.fill: parent
             anchors.margins: 14
             anchors.topMargin: 15
-            spacing: 16
+            spacing: 12
 
             VolumeControl {}
+            BrightnessControl {}
 
             // Next controls go here...
         }
