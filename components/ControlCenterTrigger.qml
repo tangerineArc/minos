@@ -1,13 +1,32 @@
 import QtQuick
+import Quickshell.Services.UPower
 
 import "../"
 
 Item {
     id: root
-    implicitWidth: triggerRow.implicitWidth
-    implicitHeight: trickWindow.height - 10
 
     signal clicked
+
+    property var bat: UPower.displayDevice
+    property bool isCharging: root.bat ? (root.bat.state === UPowerDeviceState.Charging || root.bat.state === UPowerDeviceState.FullyCharged) : false
+
+    function getBatteryIcon() {
+        if (!bat)
+            return "battery-missing-symbolic";
+
+        const level = Math.floor(bat.percentage * 100);
+        const limit = Math.floor(level / 10) * 10;
+
+        if (root.isCharging) {
+            return level >= 100 ? "battery-level-100-charged-symbolic" : `battery-level-${limit}-charging-symbolic`;
+        }
+
+        return `battery-level-${limit}-symbolic`;
+    }
+
+    implicitHeight: trickWindow.height - 10
+    implicitWidth: triggerRow.implicitWidth
 
     Row {
         id: triggerRow
@@ -18,6 +37,7 @@ Item {
         SymbolicIcon {
             iconColor: Theme.palette.secondary70
             name: "network-wireless-symbolic"
+            size: Theme.fontSize
 
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -25,6 +45,7 @@ Item {
         SymbolicIcon {
             iconColor: Theme.palette.secondary70
             name: "bluetooth-active-symbolic"
+            size: Theme.fontSize
 
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -33,22 +54,23 @@ Item {
             spacing: 4
 
             SymbolicIcon {
-                iconColor: Theme.palette.secondary70
-                name: "battery-level-60-symbolic"
+                iconColor: root.isCharging ? Theme.palette.primary80 : Theme.palette.secondary70
+                name: root.getBatteryIcon()
+                size: Theme.fontSize
 
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             Text {
-                color: Theme.palette.secondary80
-                text: "85"
+                color: Theme.palette.secondary70
+                text: root.bat ? Math.round(root.bat.percentage * 100).toString() : "--"
 
                 anchors.verticalCenter: parent.verticalCenter
 
                 font {
                     bold: true
                     family: Theme.fontFamily
-                    pixelSize: Theme.fontSize
+                    pixelSize: Theme.fontSize - 1
                 }
             }
         }

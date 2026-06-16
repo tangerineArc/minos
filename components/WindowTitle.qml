@@ -30,7 +30,7 @@ Row {
     }
 
     Text {
-        color: Theme.palette.primary60
+        color: Theme.palette.primary80
         text: root.hasWindow ? Utils.getIcon(root.appId, root.title) : ""
 
         anchors.verticalCenter: parent.verticalCenter
