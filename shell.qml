@@ -221,6 +221,7 @@ ShellRoot {
 
             VolumeControl {}
             BrightnessControl {}
+            PowerProfileControl {}
 
             // Next controls go here...
         }
