@@ -219,11 +219,10 @@ ShellRoot {
             anchors.topMargin: 15
             spacing: 12
 
+            NetworkControls {}
             VolumeControl {}
             BrightnessControl {}
             PowerProfileControl {}
-
-            // Next controls go here...
         }
     }
 }
