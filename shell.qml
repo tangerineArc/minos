@@ -170,7 +170,7 @@ ShellRoot {
         id: ccPopup
         color: "transparent"
         implicitWidth: 320
-        implicitHeight: 320
+        implicitHeight: ccColumn.implicitHeight + 29
         visible: false
 
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
@@ -214,10 +214,16 @@ ShellRoot {
         }
 
         Column {
-            anchors.fill: parent
-            anchors.margins: 14
-            anchors.topMargin: 15
+            id: ccColumn
             spacing: 12
+
+            anchors {
+                left: parent.left
+                margins: 14
+                right: parent.right
+                top: parent.top
+                topMargin: 15
+            }
 
             NetworkControls {}
             VolumeControl {}

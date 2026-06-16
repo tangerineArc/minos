@@ -43,7 +43,7 @@ Item {
                 id: workspacePill
                 property bool isActive: modelData.active
 
-                color: Utils.withAlpha(isActive ? Theme.palette.primary15 : Theme.palette.primary10, 0.67)
+                color: Utils.withAlpha(isActive ? Theme.palette.primary50 : Theme.palette.primary10, 0.67)
                 height: trickWindow.height - 10
                 radius: 10
                 width: iconRow.width + 24
@@ -55,7 +55,7 @@ Item {
                     anchors.centerIn: parent
 
                     Text {
-                        color: workspacePill.isActive ? Theme.palette.primary60 : Theme.palette.neutral70
+                        color: workspacePill.isActive ? Theme.palette.primary90 : Theme.palette.primary70
                         opacity: workspacePill.isActive ? 1.0 : 0.7
                         text: ""
                         visible: modelData.apps.length === 0
@@ -81,7 +81,7 @@ Item {
                         model: modelData.apps
 
                         Text {
-                            color: modelData.isFocused ? Theme.palette.primary70 : Theme.palette.neutral70
+                            color: modelData.isFocused ? Theme.palette.primary90 : Theme.palette.primary70
                             opacity: modelData.isFocused ? 1.0 : 0.7
                             text: Utils.getIcon(modelData.appId, modelData.title)
 

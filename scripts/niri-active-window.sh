@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#! /usr/bin/env bash
 
 get_window() {
     local win=$(niri msg -j focused-window 2>/dev/null)

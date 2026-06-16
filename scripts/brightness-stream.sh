@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#! /usr/bin/env bash
 
 get_brightness() {
     brightnessctl -m | awk -F, '{print $4}' | tr -d '%'

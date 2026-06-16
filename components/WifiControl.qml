@@ -50,9 +50,10 @@ Item {
 
     // Background
     Rectangle {
-        anchors.fill: parent
-        radius: 10
         color: Utils.withAlpha(Theme.palette.primary20, 0.67)
+        radius: 10
+
+        anchors.fill: parent
     }
 
     // Toggle button
