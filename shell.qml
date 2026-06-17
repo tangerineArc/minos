@@ -49,7 +49,7 @@ ShellRoot {
             top: true
         }
         margins {
-            left: 8
+            left: powerTriggerWindow.width + 12
             top: -trickWindow.height
         }
 
@@ -239,7 +239,7 @@ ShellRoot {
             top: true
         }
         margins {
-            left: workspaceWindow.width + 12
+            left: powerTriggerWindow.width + workspaceWindow.width + 16
             top: -trickWindow.height
         }
 
@@ -425,6 +425,207 @@ ShellRoot {
             VolumeControl {}
             BrightnessControl {}
             PowerProfileControl {}
+        }
+    }
+
+    // Power menu trigger
+    PanelWindow {
+        id: powerTriggerWindow
+        color: "transparent"
+        implicitHeight: trickWindow.height
+        implicitWidth: powerTriggerRow.width + 32
+
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.namespace: "minos-power-trigger"
+
+        anchors {
+            left: true
+            top: true
+        }
+        margins {
+            left: 8
+            top: -trickWindow.height
+        }
+
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary5, 0.44)
+            radius: 14
+
+            anchors.fill: parent
+
+            border {
+                color: Utils.withAlpha(Theme.palette.primary60, 0.15)
+                width: 1
+            }
+        }
+
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary15, 0.67)
+            height: parent.height - 10
+            radius: 10
+            width: powerTriggerRow.width + 22
+
+            anchors.centerIn: parent
+
+            Row {
+                id: powerTriggerRow
+                anchors.centerIn: parent
+
+                Item {
+                    width: Theme.fontSize + 4
+                    height: Theme.fontSize + 4
+
+                    SymbolicIcon {
+                        iconColor: Theme.palette.tertiary90
+                        name: "system-shutdown-symbolic"
+                        size: Theme.fontSize
+
+                        anchors.centerIn: parent
+                    }
+
+                    MouseArea {
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: powerPopup.visible = !powerPopup.visible
+
+                        anchors.fill: parent
+                    }
+                }
+            }
+        }
+    }
+
+    // Power-menu popup
+    PanelWindow {
+        id: powerPopup
+        color: "transparent"
+        implicitHeight: trickWindow.height + 10
+        implicitWidth: powerPopupRow.implicitWidth + 38
+        visible: false
+
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.namespace: "minos-power-popup"
+
+        anchors {
+            left: true
+            top: true
+        }
+        margins {
+            left: 8
+            top: 4
+        }
+
+        Connections {
+            target: Qt.application
+            function onStateChanged() {
+                if (Qt.application.state !== Qt.ApplicationActive && powerPopup.visible) {
+                    powerPopup.visible = false;
+                }
+            }
+        }
+
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary5, 0.44)
+            radius: 14
+
+            anchors.fill: parent
+
+            border {
+                color: Utils.withAlpha(Theme.palette.primary60, 0.15)
+                width: 1
+            }
+        }
+
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary15, 0.67)
+            height: parent.height - 10
+            radius: 10
+            width: powerPopupRow.implicitWidth + 28
+
+            anchors.centerIn: parent
+
+            Row {
+                id: powerPopupRow
+                spacing: 14
+                anchors.centerIn: parent
+
+                Process {
+                    id: powerProc
+                }
+
+                // A: Suspend
+                Item {
+                    height: Theme.fontSize + 4
+                    width: Theme.fontSize + 4
+
+                    SymbolicIcon {
+                        iconColor: Theme.palette.secondary80
+                        name: "weather-clear-night-symbolic"
+                        size: Theme.fontSize + 2
+
+                        anchors.centerIn: parent
+                    }
+
+                    MouseArea {
+                        cursorShape: Qt.PointingHandCursor
+                        anchors.fill: parent
+
+                        onClicked: {
+                            powerProc.command = ["systemctl", "suspend"];
+                            powerProc.running = true;
+                            powerPopup.visible = false;
+                        }
+                    }
+                }
+
+                Item {
+                    height: Theme.fontSize + 4
+                    width: Theme.fontSize + 4
+
+                    SymbolicIcon {
+                        iconColor: Theme.palette.secondary80
+                        name: "system-reboot-symbolic"
+                        size: Theme.fontSize + 2
+
+                        anchors.centerIn: parent
+                    }
+
+                    MouseArea {
+                        cursorShape: Qt.PointingHandCursor
+                        anchors.fill: parent
+
+                        onClicked: {
+                            powerProc.command = ["systemctl", "reboot"];
+                            powerProc.running = true;
+                            powerPopup.visible = false;
+                        }
+                    }
+                }
+
+                Item {
+                    height: Theme.fontSize + 4
+                    width: Theme.fontSize + 4
+
+                    SymbolicIcon {
+                        iconColor: Theme.palette.tertiary80
+                        name: "system-shutdown-symbolic"
+                        size: Theme.fontSize + 2
+
+                        anchors.centerIn: parent
+                    }
+
+                    MouseArea {
+                        cursorShape: Qt.PointingHandCursor
+                        anchors.fill: parent
+
+                        onClicked: {
+                            powerProc.command = ["systemctl", "poweroff"];
+                            powerProc.running = true;
+                            powerPopup.visible = false;
+                        }
+                    }
+                }
+            }
         }
     }
 }
