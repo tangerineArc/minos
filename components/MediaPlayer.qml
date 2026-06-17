@@ -124,6 +124,12 @@ Row {
 
                 anchors.fill: parent
 
+                property color activeColor: Theme.palette.primary60
+                property color inactiveColor: Utils.withAlpha(Theme.palette.primary60, 0.3)
+
+                onActiveColorChanged: requestPaint()
+                onInactiveColorChanged: requestPaint()
+
                 onPaint: {
                     var ctx = getContext("2d");
                     ctx.clearRect(0, 0, width, height);
@@ -142,7 +148,7 @@ Row {
                     ctx.beginPath();
                     ctx.moveTo(headX, centerY);
                     ctx.lineTo(width, centerY);
-                    ctx.strokeStyle = Utils.withAlpha(Theme.palette.primary60, 0.3);
+                    ctx.strokeStyle = waveCanvas.inactiveColor;
                     ctx.stroke();
 
                     // Draw active wavy track (left side)
@@ -157,7 +163,7 @@ Row {
                         var y = centerY + Math.sin(x * frequency + parent.phase) * amplitude * damp;
                         ctx.lineTo(x, y);
                     }
-                    ctx.strokeStyle = Theme.palette.primary60;
+                    ctx.strokeStyle = waveCanvas.activeColor;
                     ctx.stroke();
                 }
             }
