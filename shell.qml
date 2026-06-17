@@ -175,7 +175,95 @@ ShellRoot {
         }
     }
 
-    // Standalone Media Player Window
+    // Clock Window
+    PanelWindow {
+        id: clockWindow
+        color: "transparent"
+        implicitHeight: trickWindow.height
+        implicitWidth: clockItem.width + 38
+
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.namespace: "minos-clock"
+
+        anchors {
+            right: true
+            top: true
+        }
+        margins {
+            right: controlsWindow.width + 12
+            top: -trickWindow.height
+        }
+
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary5, 0.44)
+            radius: 14
+
+            anchors.fill: parent
+
+            border {
+                color: Utils.withAlpha(Theme.palette.primary60, 0.15)
+                width: 1
+            }
+        }
+
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary15, 0.67)
+            height: parent.height - 10
+            radius: 10
+            width: clockItem.width + 28
+
+            anchors.centerIn: parent
+
+            Clock {
+                id: clockItem
+                anchors.centerIn: parent
+            }
+        }
+    }
+
+    // Date tooltip popup
+    PanelWindow {
+        id: dateTooltip
+        color: "transparent"
+        implicitHeight: dateText.implicitHeight + 12
+        implicitWidth: dateText.implicitWidth + 24
+        visible: clockItem.isHovered
+
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.namespace: "minos-date-tooltip"
+
+        anchors {
+            right: true
+            top: true
+        }
+        margins {
+            top: 4
+            right: (controlsWindow.width + 12) + (clockWindow.width / 2) - (width / 2)
+        }
+
+        Rectangle {
+            color: Theme.palette.neutral80
+            radius: 8
+
+            anchors.fill: parent
+
+            Text {
+                id: dateText
+                color: Theme.palette.neutral10
+                text: clockItem.dateText
+
+                anchors.centerIn: parent
+
+                font {
+                    bold: true
+                    family: Theme.fontFamily
+                    pixelSize: 12
+                }
+            }
+        }
+    }
+
+    // Media player window
     PanelWindow {
         id: mediaWindow
         color: "transparent"
@@ -190,7 +278,7 @@ ShellRoot {
             top: true
         }
         margins {
-            right: controlsWindow.width + 12
+            right: controlsWindow.width + clockWindow.width + 16
             top: -trickWindow.height
         }
 
