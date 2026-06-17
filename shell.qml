@@ -190,8 +190,7 @@ ShellRoot {
             top: true
         }
         margins {
-            // Push it left: original 8px margin + controls width + 8px gap
-            right: controlsWindow.width + 16
+            right: controlsWindow.width + 12
             top: -trickWindow.height
         }
 

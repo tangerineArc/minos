@@ -6,9 +6,30 @@ import "../"
 
 Row {
     id: root
-    property var player: Mpris.players.values[0] ?? null
+    property var player: (function () {
+            let players = Mpris.players.values;
+            let validFallback = null;
+
+            for (let i = 0; i < players.length; i++) {
+                let p = players[i];
+                let title = p.metadata ? (p.metadata["xesam:title"] || "") : "";
+
+                if (title === "")
+                    continue;
+
+                if (p.playbackState === MprisPlaybackState.Playing) {
+                    return p;
+                }
+
+                if (!validFallback) {
+                    validFallback = p;
+                }
+            }
+            return validFallback;
+        })()
+
     property bool isPlaying: player ? player.playbackState === MprisPlaybackState.Playing : false
-    property bool hasMedia: Mpris.players.values.length > 0
+    property bool hasMedia: player !== null && player !== undefined
 
     RowLayout {
         spacing: 12
@@ -128,13 +149,13 @@ Row {
     }
 
     RowLayout {
-        width: 200
+        width: 240
         visible: !root.hasMedia
         spacing: 12
 
         Text {
             Layout.fillWidth: true
-            color: Theme.palette.primary70
+            color: Theme.palette.secondary70
             text: "no media playing"
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -146,20 +167,10 @@ Row {
             }
         }
 
-        // Generic Thumbnail Placeholder
-        Rectangle {
-            color: Utils.withAlpha(Theme.palette.primary20, 0.5)
-            Layout.preferredWidth: root.height
-            Layout.preferredHeight: root.height
-            radius: 6
-
-            SymbolicIcon {
-                iconColor: Theme.palette.primary60
-                name: "audio-x-generic-symbolic"
-                size: Theme.fontSize
-
-                anchors.centerIn: parent
-            }
+        SymbolicIcon {
+            iconColor: Theme.palette.primary70
+            name: "audio-x-generic-symbolic"
+            size: Theme.fontSize + 1
         }
     }
 }
