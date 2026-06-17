@@ -43,27 +43,29 @@ Row {
             MouseArea {
                 cursorShape: Qt.PointingHandCursor
                 height: backIcon.height
-                onClicked: if (root.player)
-                    root.player.previous()
                 width: backIcon.width
 
                 anchors.verticalCenter: parent.verticalCenter
 
+                onClicked: if (root.player)
+                    root.player.previous()
+
                 SymbolicIcon {
                     id: backIcon
-                    name: "media-skip-backward-symbolic"
                     iconColor: Theme.palette.secondary70
+                    name: "media-skip-backward-symbolic"
                 }
             }
 
             MouseArea {
                 cursorShape: Qt.PointingHandCursor
                 height: playIcon.height
-                onClicked: if (root.player)
-                    root.player.togglePlaying()
                 width: playIcon.width
 
                 anchors.verticalCenter: parent.verticalCenter
+
+                onClicked: if (root.player)
+                    root.player.togglePlaying()
 
                 SymbolicIcon {
                     id: playIcon
@@ -76,11 +78,12 @@ Row {
             MouseArea {
                 cursorShape: Qt.PointingHandCursor
                 height: nextIcon.height
-                onClicked: if (root.player)
-                    root.player.next()
                 width: nextIcon.width
 
                 anchors.verticalCenter: parent.verticalCenter
+
+                onClicked: if (root.player)
+                    root.player.next()
 
                 SymbolicIcon {
                     id: nextIcon
@@ -92,31 +95,69 @@ Row {
 
         // Dynamic progress
         Item {
-            implicitWidth: progressBar.width
-            implicitHeight: progressBar.height
+            Layout.alignment: Qt.AlignVCenter
+            implicitWidth: 180
+            implicitHeight: 24
 
-            Rectangle {
-                id: progressBar
-                color: Utils.withAlpha(Theme.palette.primary60, 0.3)
-                height: 4
-                radius: 4
-                width: 180
+            property real currentProgress: (root.player && root.player.length > 0) ? (root.player.position / root.player.length) : 0
+            property real phase: 0
 
-                anchors.verticalCenter: parent.verticalCenter
+            onCurrentProgressChanged: {
+                waveCanvas.requestPaint();
+            }
 
-                Rectangle {
-                    // property real trackLengthSec: (player.metadata && player.metadata["mpris:length"]) ? (player.metadata["mpris:length"] / 1000000) : 0
+            Timer {
+                interval: 32 // ~30 FPS
+                repeat: true
+                running: root.isPlaying
 
-                    color: Theme.palette.primary60
-                    height: parent.height
-                    radius: parent.radius
-                    width: (root.player && root.player.length > 0) ? Math.min(parent.width, parent.width * (root.player.position / root.player.length)) : 0
+                onTriggered: {
+                    parent.phase -= 0.15; // Speed of the wave scrolling left
+                    waveCanvas.requestPaint();
+                }
+            }
 
-                    Behavior on width {
-                        NumberAnimation {
-                            duration: 100
-                        }
+            Canvas {
+                id: waveCanvas
+                antialiasing: true
+
+                anchors.fill: parent
+
+                onPaint: {
+                    var ctx = getContext("2d");
+                    ctx.clearRect(0, 0, width, height);
+
+                    var centerY = height / 2;
+                    var headX = Math.max(0, Math.min(width, width * parent.currentProgress));
+
+                    var amplitude = 5; // How tall the wave is
+                    var frequency = 0.18; // How tight the squiggles are
+
+                    ctx.lineWidth = 4;
+                    ctx.lineCap = "round";
+                    ctx.lineJoin = "round";
+
+                    // Draw inactive straight track (right side)
+                    ctx.beginPath();
+                    ctx.moveTo(headX, centerY);
+                    ctx.lineTo(width, centerY);
+                    ctx.strokeStyle = Utils.withAlpha(Theme.palette.primary60, 0.3);
+                    ctx.stroke();
+
+                    // Draw active wavy track (left side)
+                    ctx.beginPath();
+                    ctx.moveTo(0, centerY);
+
+                    for (var x = 0; x <= headX; x += 2) {
+                        var dampLeft = Math.min(1.0, x / 10.0);
+                        var dampRight = x > headX - 15 ? Math.max(0, (headX - x) / 15.0) : 1.0;
+                        var damp = Math.min(dampLeft, dampRight);
+
+                        var y = centerY + Math.sin(x * frequency + parent.phase) * amplitude * damp;
+                        ctx.lineTo(x, y);
                     }
+                    ctx.strokeStyle = Theme.palette.primary60;
+                    ctx.stroke();
                 }
             }
         }
