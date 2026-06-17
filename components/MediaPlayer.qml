@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 import Quickshell.Services.Mpris
 
 import "../"
@@ -165,17 +166,30 @@ Row {
         // Thumbnail
         Rectangle {
             color: Utils.withAlpha(Theme.palette.primary20, 0.5)
+            radius: 6
 
-            Layout.preferredWidth: parent.height
             Layout.preferredHeight: parent.height
+            Layout.preferredWidth: parent.height
 
             Image {
                 id: art
-                source: root.player ? (root.player.trackArtUrl || "") : ""
                 fillMode: Image.PreserveAspectCrop
+                source: root.player ? (root.player.trackArtUrl || "") : ""
                 visible: source.toString() !== ""
 
                 anchors.fill: parent
+
+                layer {
+                    enabled: true
+
+                    effect: OpacityMask {
+                        maskSource: Rectangle {
+                            height: art.height
+                            radius: 6
+                            width: art.width
+                        }
+                    }
+                }
             }
 
             SymbolicIcon {
