@@ -1,3 +1,4 @@
+//@ pragma UseQApplication
 import QtQuick
 import QtQuick.Window
 import Quickshell
@@ -35,6 +36,7 @@ ShellRoot {
 
     // Workspace switcher
     PanelWindow {
+        id: workspaceWindow
         color: "transparent"
         implicitHeight: trickWindow.height
         implicitWidth: leftContent.width + 10
@@ -216,6 +218,55 @@ ShellRoot {
 
             Clock {
                 id: clockItem
+                anchors.centerIn: parent
+            }
+        }
+    }
+
+    // System Tray Window
+    PanelWindow {
+        id: trayWindow
+        color: "transparent"
+        implicitHeight: trickWindow.height
+        implicitWidth: systemTrayItem.width + 26
+        visible: systemTrayItem.itemCount > 0
+
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.namespace: "minos-system-tray"
+
+        anchors {
+            left: true
+            top: true
+        }
+        margins {
+            left: workspaceWindow.width + 12
+            top: -trickWindow.height
+        }
+
+        // Background
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary5, 0.44)
+            radius: 14
+
+            anchors.fill: parent
+
+            border {
+                color: Utils.withAlpha(Theme.palette.primary60, 0.15)
+                width: 1
+            }
+        }
+
+        // Inner tray
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary15, 0.67)
+            height: parent.height - 10
+            radius: 10
+            width: systemTrayItem.implicitWidth + 16
+
+            anchors.centerIn: parent
+
+            SystemTrayWidget {
+                id: systemTrayItem
                 anchors.centerIn: parent
             }
         }
