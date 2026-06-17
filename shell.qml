@@ -1,11 +1,20 @@
 import QtQuick
 import QtQuick.Window
 import Quickshell
+import Quickshell.Io
 import Quickshell.Wayland
 
 import "./components"
 
 ShellRoot {
+    IpcHandler {
+        target: "controlcenter"
+
+        function toggle() {
+            ccPopup.visible = !ccPopup.visible;
+        }
+    }
+
     // Space reserver
     PanelWindow {
         id: trickWindow
@@ -116,6 +125,7 @@ ShellRoot {
 
     // Controls Trigger
     PanelWindow {
+        id: controlsWindow
         color: "transparent"
         implicitHeight: trickWindow.height
         implicitWidth: rightContent.width + 38
@@ -161,6 +171,54 @@ ShellRoot {
                 ControlCenterTrigger {
                     onClicked: ccPopup.visible = !ccPopup.visible
                 }
+            }
+        }
+    }
+
+    // Standalone Media Player Window
+    PanelWindow {
+        id: mediaWindow
+        color: "transparent"
+        implicitHeight: trickWindow.height
+        implicitWidth: mediaPlayerItem.width + 38
+
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.namespace: "minos-media-player"
+
+        anchors {
+            right: true
+            top: true
+        }
+        margins {
+            // Push it left: original 8px margin + controls width + 8px gap
+            right: controlsWindow.width + 16
+            top: -trickWindow.height
+        }
+
+        // Background
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary5, 0.44)
+            radius: 14
+
+            anchors.fill: parent
+
+            border {
+                color: Utils.withAlpha(Theme.palette.primary60, 0.15)
+                width: 1
+            }
+        }
+
+        Rectangle {
+            color: Utils.withAlpha(Theme.palette.primary15, 0.67)
+            height: parent.height - 10
+            radius: 10
+            width: mediaPlayerItem.width + 28
+
+            anchors.centerIn: parent
+
+            MediaPlayer {
+                id: mediaPlayerItem
+                anchors.centerIn: parent
             }
         }
     }

@@ -55,7 +55,7 @@
         #! /bin/sh
         export QS_ICON_THEME="Adwaita"
         export QML2_IMPORT_PATH="${pkgs.qt6.qt5compat}/lib/qt-6/qml:\$QML2_IMPORT_PATH"
-        exec ${quickshell.packages.${system}.default}/bin/quickshell -p $out/share/minos/shell.qml
+        exec ${quickshell.packages.${system}.default}/bin/quickshell -p $out/share/minos/shell.qml "\$@"
         EOF
 
         chmod +x $out/bin/minos
